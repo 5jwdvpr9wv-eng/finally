@@ -1,5 +1,6 @@
 {
   "enabledPlugins": {
-    "independent-reviewer@rick-tools": true
+    "independent-reviewer@rick-tools": true,
+    "playwright@claude-plugins-official": true
   }
 }
