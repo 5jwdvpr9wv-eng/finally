@@ -1,0 +1,33 @@
+services:
+  finally:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: finally
+    environment:
+      - LLM_MOCK=true
+      # Intentionally no OPENROUTER_API_KEY: LLM_MOCK=true bypasses the key
+      # check entirely, so the suite never needs a real credential.
+    # No volume mount: every test run starts from a fresh, freshly-seeded
+    # SQLite file inside the container, per PLAN.md's lazy-init behavior.
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  playwright:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      finally:
+        condition: service_healthy
+    environment:
+      - BASE_URL=http://finally:8000
+    volumes:
+      - ./playwright-report:/app/test/playwright-report
+      - ./test-results:/app/test/test-results

@@ -206,3 +206,20 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# FinAlly runtime SQLite database (volume-mounted, recreated on container start)
+db/*.db
+db/*.db-journal
+!db/.gitkeep
+
+# Frontend (Next.js)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/next-env.d.ts
+frontend/*.tsbuildinfo
+
+# The Python "lib/" ignore rule above (packaging build artifacts) also
+# matches frontend/src/lib/ since it has no leading slash. Un-ignore it.
+!frontend/src/lib/
+!frontend/src/lib/**
